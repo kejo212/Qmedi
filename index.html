@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MedQuest - Banco de Questões</title>
+    <!-- Tailwind CSS (Via CDN para não precisar instalar nada) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: {} }
+        }
+    </script>
+    <style>
+        /* Transição suave para o modo escuro */
+        body { transition: background-color 0.3s, color 0.3s; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen">
+
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-md p-4 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-blue-600 dark:text-blue-400">MedQuest</h1>
+        <div class="flex items-center gap-4">
+            <button id="theme-toggle" class="p-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                🌙 Escuro / ☀️ Claro
+            </button>
+            <button id="btn-logout" class="hidden text-red-500 font-semibold hover:underline">Sair</button>
+        </div>
+    </nav>
+
+    <!-- Tela de Login / Cadastro -->
+    <div id="auth-screen" class="max-w-md mx-auto mt-20 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg">
+        <h2 class="text-2xl font-bold mb-6 text-center" id="auth-title">Entrar</h2>
+        <form id="auth-form" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium mb-1">Usuário</label>
+                <input type="text" id="username" required class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium mb-1">Senha</label>
+                <input type="password" id="password" required class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            </div>
+            <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition font-bold" id="auth-submit">Entrar</button>
+        </form>
+        <p class="mt-4 text-sm text-center">
+            <span id="auth-switch-text">Não tem conta?</span>
+            <button id="auth-switch-btn" class="text-blue-500 hover:underline">Cadastre-se</button>
+        </p>
+    </div>
+
+    <!-- Tela Principal do App (Oculta até fazer login) -->
+    <div id="app-screen" class="hidden max-w-6xl mx-auto mt-8 p-4 grid grid-cols-1 md:grid-cols-4 gap-6">
+
+        <!-- Barra Lateral de Filtros -->
+        <aside class="col-span-1 bg-white dark:bg-gray-800 p-4 rounded-xl shadow-md h-fit">
+            <h3 class="font-bold text-lg mb-4 border-b pb-2 dark:border-gray-700">Filtros de Temas</h3>
+
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium mb-1">Matéria (Ex: Cirurgia)</label>
+                    <select id="filtro-materia" class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600">
+                        <option value="Todos">Todos</option>
+                    </select>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium mb-1">Assunto (Ex: Trauma)</label>
+                    <select id="filtro-assunto" disabled class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 opacity-50">
+                        <option value="Todos">Todos</option>
+                    </select>
+                </div>
+            </div>
+
+            <button id="btn-filtrar" class="w-full mt-6 bg-green-600 text-white p-2 rounded hover:bg-green-700 transition font-bold">
+                Aplicar Filtros
+            </button>
+        </aside>
+
+        <!-- Lista de Questões -->
+        <main class="col-span-1 md:col-span-3">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-xl font-bold">Questões</h2>
+                <span id="contador-questoes" class="text-sm bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 py-1 px-3 rounded-full">0 encontradas</span>
+            </div>
+
+            <!-- Container onde as questões serão injetadas pelo JS -->
+            <div id="questoes-container" class="space-y-6">
+                <p class="text-gray-500 text-center py-10">Carregando banco de questões...</p>
+            </div>
+
+            <button id="btn-carregar-mais" class="hidden w-full mt-6 bg-gray-200 dark:bg-gray-700 p-3 rounded font-bold hover:bg-gray-300 dark:hover:bg-gray-600 transition">
+                Carregar mais questões
+            </button>
+        </main>
+    </div>
+
+    <!-- Script de Lógica -->
+    <script src="app.js"></script>
+</body>
+</html>
