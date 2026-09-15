@@ -3,14 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MedQuest - Banco de Questões</title>
+    <title>MedQuest - Banco de Questoes</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { darkMode: 'class', theme: { extend: {} } }
     </script>
     <style>
         body { transition: background-color 0.3s, color 0.3s; }
-        /* Estilo para a paginação */
         .page-link { cursor: pointer; padding: 0.5rem 1rem; border-radius: 0.5rem; transition: 0.2s; border: 1px solid #e5e7eb; }
         .dark .page-link { border-color: #374151; }
         .page-link.active { background-color: #2563eb; color: white; border-color: #2563eb; }
@@ -18,24 +17,22 @@
 </head>
 <body class="bg-gray-50 text-gray-900 dark:bg-gray-900 dark:text-gray-100 min-h-screen font-sans">
 
-    <!-- Navbar -->
     <nav class="bg-white dark:bg-gray-800 shadow p-4 flex justify-between items-center sticky top-0 z-50">
         <h1 class="text-2xl font-black text-blue-600 dark:text-blue-400">MedQuest</h1>
         <div class="flex items-center gap-4">
             <span id="user-greeting" class="hidden font-medium text-sm md:text-base"></span>
-            <button id="theme-toggle" class="p-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition" title="Alternar Tema">
-                🌙/☀️
+            <button id="theme-toggle" class="p-2 bg-gray-200 dark:bg-gray-700 rounded-lg hover:bg-gray-300 dark:hover:bg-gray-600 transition text-sm" title="Alternar Tema">
+                Modo Escuro / Claro
             </button>
             <button id="btn-logout" class="hidden text-red-500 font-bold hover:underline">Sair</button>
         </div>
     </nav>
 
-    <!-- Tela de Login / Cadastro -->
     <div id="auth-screen" class="max-w-md mx-auto mt-20 bg-white dark:bg-gray-800 p-8 rounded-xl shadow-lg border dark:border-gray-700">
         <h2 class="text-2xl font-bold mb-6 text-center" id="auth-title">Entrar</h2>
         <form id="auth-form" class="space-y-4">
             <div>
-                <label class="block text-sm font-medium mb-1">Usuário</label>
+                <label class="block text-sm font-medium mb-1">Usuario</label>
                 <input type="text" id="username" required class="w-full p-2 border rounded dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
             </div>
             <div>
@@ -45,81 +42,101 @@
             <button type="submit" class="w-full bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition font-bold" id="auth-submit">Entrar</button>
         </form>
         <p class="mt-4 text-sm text-center">
-            <span id="auth-switch-text">Não tem conta?</span> 
+            <span id="auth-switch-text">Nao tem conta?</span> 
             <button id="auth-switch-btn" class="text-blue-500 hover:underline font-semibold">Cadastre-se</button>
         </p>
     </div>
 
-    <!-- Tela Principal -->
-    <div id="app-screen" class="hidden max-w-5xl mx-auto mt-6 p-4">
+    <div id="app-screen" class="hidden max-w-7xl mx-auto mt-6 p-4 grid grid-cols-1 xl:grid-cols-4 gap-6">
         
-        <!-- PAINEL DE FILTROS (NO TOPO) -->
-        <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-sm border dark:border-gray-700 mb-6">
-            <h3 class="font-bold text-lg mb-4 border-b pb-2 dark:border-gray-700 flex justify-between items-center">
-                <span>Filtros de Busca</span>
-                <span id="contador-questoes" class="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 py-1 px-3 rounded-full">0 encontradas</span>
-            </h3>
+        <div class="xl:col-span-3 flex flex-col gap-6">
             
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <!-- Busca por palavra-chave -->
-                <div class="md:col-span-3">
-                    <input type="text" id="filtro-busca" placeholder="Pesquisar palavra-chave no enunciado..." 
-                           class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-                </div>
+            <div class="bg-white dark:bg-gray-800 p-5 rounded-xl shadow-sm border dark:border-gray-700">
+                <h3 class="font-bold text-lg mb-4 border-b pb-2 dark:border-gray-700 flex justify-between items-center">
+                    <span>Filtros de Busca</span>
+                    <span id="contador-questoes" class="text-xs bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 py-1 px-3 rounded-full">0 encontradas</span>
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="md:col-span-3">
+                        <input type="text" id="filtro-busca" placeholder="Pesquisar palavra-chave no enunciado..." 
+                               class="w-full p-3 border rounded-lg dark:bg-gray-700 dark:border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 text-justify">
+                    </div>
 
-                <!-- Checkboxes de Status -->
-                <div class="md:col-span-3 flex flex-wrap gap-6 bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg border dark:border-gray-600">
-                    <label class="flex items-center gap-2 cursor-pointer font-medium text-sm">
-                        <input type="checkbox" id="chk-ineditas" class="w-4 h-4 text-blue-600 rounded"> Inéditas
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer font-medium text-sm">
-                        <input type="checkbox" id="chk-acertos" class="w-4 h-4 text-green-600 rounded"> Acertos (Feitas)
-                    </label>
-                    <label class="flex items-center gap-2 cursor-pointer font-medium text-sm">
-                        <input type="checkbox" id="chk-erradas" class="w-4 h-4 text-red-600 rounded"> Erros (Feitas)
-                    </label>
-                </div>
+                    <div class="md:col-span-3 flex flex-wrap gap-6 bg-gray-50 dark:bg-gray-700/50 p-3 rounded-lg border dark:border-gray-600">
+                        <label class="flex items-center gap-2 cursor-pointer font-medium text-sm">
+                            <input type="checkbox" id="chk-ineditas" class="w-4 h-4 text-blue-600 rounded"> Ineditas
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer font-medium text-sm">
+                            <input type="checkbox" id="chk-acertos" class="w-4 h-4 text-green-600 rounded"> Acertos (Feitas)
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer font-medium text-sm">
+                            <input type="checkbox" id="chk-erradas" class="w-4 h-4 text-red-600 rounded"> Erros (Feitas)
+                        </label>
+                    </div>
 
-                <!-- Filtros Hierárquicos -->
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Matéria</label>
-                    <select id="filtro-materia" class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm">
-                        <option value="Todos">Todas as Matérias</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Conteúdo</label>
-                    <select id="filtro-assunto" disabled class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm opacity-50">
-                        <option value="Todos">Todos os Conteúdos</option>
-                    </select>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Assunto Específico</label>
-                    <select id="filtro-subassunto" disabled class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm opacity-50">
-                        <option value="Todos">Todos os Assuntos</option>
-                    </select>
-                </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Materia</label>
+                        <select id="filtro-materia" class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm">
+                            <option value="Todos">Todas as Materias</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Conteudo</label>
+                        <select id="filtro-assunto" disabled class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm opacity-50">
+                            <option value="Todos">Todos os Conteudos</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-gray-500 uppercase mb-1">Assunto Especifico</label>
+                        <select id="filtro-subassunto" disabled class="w-full p-2 border rounded-lg dark:bg-gray-700 dark:border-gray-600 text-sm opacity-50">
+                            <option value="Todos">Todos os Assuntos</option>
+                        </select>
+                    </div>
 
-                <!-- Botão de Ação -->
-                <div class="md:col-span-3">
-                    <button id="btn-filtrar" class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition font-bold text-lg shadow-md">
-                        Aplicar Filtros
-                    </button>
+                    <div class="md:col-span-3">
+                        <button id="btn-filtrar" class="w-full bg-blue-600 text-white p-3 rounded-lg hover:bg-blue-700 transition font-bold text-lg shadow-md">
+                            Aplicar Filtros
+                        </button>
+                    </div>
                 </div>
             </div>
+
+            <main>
+                <div id="questoes-container" class="space-y-6">
+                </div>
+                
+                <div id="paginacao-container" class="mt-8 mb-12 flex flex-wrap justify-center gap-2">
+                </div>
+            </main>
         </div>
 
-        <!-- CONTAINER DAS QUESTÕES -->
-        <main>
-            <div id="questoes-container" class="space-y-6">
-                <!-- Javascript injeta as questoes aqui -->
+        <aside class="xl:col-span-1 hidden xl:block">
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border dark:border-gray-700 sticky top-24 flex flex-col items-center">
+                <div class="w-24 h-24 bg-gray-200 dark:bg-gray-700 rounded-full flex items-center justify-center mb-4 shadow-inner text-gray-400">
+                    <svg class="w-12 h-12" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                </div>
+                <h3 class="font-bold text-xl mb-1 text-center" id="sidebar-user-name">Usuario</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-6 text-center">Perfil de Estudante</p>
+                
+                <div class="w-full border-t dark:border-gray-700 pt-6">
+                    <h4 class="font-bold text-sm text-gray-400 uppercase mb-3 text-center">Planos Futuros</h4>
+                    <ul class="space-y-3 text-sm text-justify">
+                        <li class="flex items-center gap-2 opacity-60">
+                            <div class="w-2 h-2 rounded-full bg-blue-500"></div> Estatisticas de Desempenho
+                        </li>
+                        <li class="flex items-center gap-2 opacity-60">
+                            <div class="w-2 h-2 rounded-full bg-green-500"></div> Simulados Personalizados
+                        </li>
+                        <li class="flex items-center gap-2 opacity-60">
+                            <div class="w-2 h-2 rounded-full bg-purple-500"></div> Metas de Estudo
+                        </li>
+                    </ul>
+                </div>
             </div>
-            
-            <!-- PAGINAÇÃO (ABAS) -->
-            <div id="paginacao-container" class="mt-8 mb-12 flex flex-wrap justify-center gap-2">
-                <!-- Javascript injeta os botoes de pagina aqui -->
-            </div>
-        </main>
+        </aside>
     </div>
 
     <script src="app.js"></script>
